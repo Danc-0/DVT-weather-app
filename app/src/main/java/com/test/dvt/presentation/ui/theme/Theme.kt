@@ -1,4 +1,4 @@
-package com.test.dvt.ui.theme
+package com.test.dvt.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
