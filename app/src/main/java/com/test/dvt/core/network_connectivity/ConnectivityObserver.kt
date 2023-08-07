@@ -3,9 +3,9 @@ package com.test.dvt.core.network_connectivity
 import kotlinx.coroutines.flow.Flow
 
 interface ConnectivityObserver {
-    fun observe(): Flow<Status>
-}
+    fun observe(): Flow<NetworkStatus>
 
-enum class Status {
-    Available, Unavailable, Lost
+    enum class NetworkStatus {
+        Available, Unavailable, Lost
+    }
 }
