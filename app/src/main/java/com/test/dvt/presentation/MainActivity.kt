@@ -1,4 +1,4 @@
-package com.test.dvt
+package com.test.dvt.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -8,21 +8,29 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.test.dvt.core.network_connectivity.ConnectivityObserver
+import com.test.dvt.core.network_connectivity.NetworkConnectivityObserver
 import com.test.dvt.presentation.ui.theme.DVTWeatherTestAppTheme
 
 class MainActivity : ComponentActivity() {
+    private lateinit var connectivityObserver: ConnectivityObserver
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        connectivityObserver = NetworkConnectivityObserver(applicationContext);
         setContent {
             DVTWeatherTestAppTheme {
-                // A surface container using the 'background' color from the theme
+                val status by connectivityObserver.observe()
+                    .collectAsState(initial = ConnectivityObserver.NetworkStatus.Unavailable
+                    )
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    Greeting("Android Network Status: $status")
                 }
             }
         }

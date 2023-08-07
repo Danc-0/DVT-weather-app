@@ -3,42 +3,43 @@ package com.test.dvt.core.network_connectivity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.test.dvt.core.network_connectivity.ConnectivityObserver.*
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class NetworkConnectivityObserver(
-    private val context: Context
-): ConnectivityObserver {
+    context: Context
+) : ConnectivityObserver {
 
     private val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-    override fun observe(): Flow<ConnectivityObserver.NetworkStatus> {
+    override fun observe(): Flow<NetworkStatus> {
         return callbackFlow {
-            val callback = object : ConnectivityManager.NetworkCallback() {
+            val networkCallback = object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     super.onAvailable(network)
-                    launch { send(ConnectivityObserver.NetworkStatus.Available) }
-                }
-
-                override fun onLost(network: Network) {
-                    super.onLost(network)
-                    launch { send(ConnectivityObserver.NetworkStatus.Lost) }
+                    launch { send(NetworkStatus.Available) }
                 }
 
                 override fun onUnavailable() {
                     super.onUnavailable()
-                    launch { send(ConnectivityObserver.NetworkStatus.Unavailable) }
+                    launch { send(NetworkStatus.Unavailable) }
+                }
+
+                override fun onLost(network: Network) {
+                    super.onLost(network)
+                    launch { send(NetworkStatus.Lost) }
                 }
             }
 
-            connectivityManager.registerDefaultNetworkCallback(callback)
+            connectivityManager.registerDefaultNetworkCallback(networkCallback)
             awaitClose {
-                connectivityManager.unregisterNetworkCallback(callback)
+                connectivityManager.unregisterNetworkCallback(networkCallback)
             }
         }.distinctUntilChanged()
     }
