@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    MainComponent(navHostController = navController)
+                    MainComponent(navHostController = navController, location = locationByGps ?: locationByNetwork)
                 }
             }
         }
@@ -132,14 +132,14 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainComponent(navHostController: NavHostController) {
+fun MainComponent(navHostController: NavHostController, location: Location?) {
     Scaffold(modifier = Modifier, bottomBar = {
         BottomAppBarComponent(navController = navHostController)
     }) { contentPadding ->
         Column(
             modifier = Modifier.padding(paddingValues = contentPadding)
         ) {
-            MainNavigationGraph(navController = navHostController)
+            MainNavigationGraph(navController = navHostController, location = location)
         }
     }
 }

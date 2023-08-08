@@ -1,5 +1,6 @@
 package com.test.dvt.presentation.navigation
 
+import android.location.Location
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -12,6 +13,7 @@ import com.test.dvt.presentation.screens.WeatherScreen
 @Composable
 fun MainNavigationGraph(
     navController: NavHostController,
+    location: Location?
 ) {
     NavHost(
         navController = navController,
@@ -19,11 +21,11 @@ fun MainNavigationGraph(
     ) {
 
         composable(route = BottomNavRoutes.Weather.route) {
-            WeatherScreen(navController = navController)
+            WeatherScreen(navController = navController, location = location)
         }
 
         composable(route = BottomNavRoutes.Forecast.route) {
-            ForecastScreen(navController = navController)
+            ForecastScreen(navController = navController, location = location)
         }
     }
 }
