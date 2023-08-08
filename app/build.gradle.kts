@@ -103,5 +103,7 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
 
+    // Google Location API
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
 }
