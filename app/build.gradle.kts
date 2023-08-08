@@ -51,6 +51,8 @@ android {
 
 dependencies {
     val roomVersion = "2.5.2"
+    val navVersion = "2.6.0"
+    val material3Version = "1.1.1"
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
@@ -68,11 +70,21 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
+    // Material UI - 3
+    implementation("androidx.compose.material3:material3:$material3Version")
+
+    // Lottie
+    implementation("com.airbnb.android:lottie-compose:5.2.0")
+
     // LifeCycle
     implementation("androidx.lifecycle:lifecycle-common:2.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
+
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:$navVersion")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     // Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
