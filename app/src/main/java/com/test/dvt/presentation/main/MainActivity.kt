@@ -1,5 +1,7 @@
 package com.test.dvt.presentation.main
 
+import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -26,15 +28,20 @@ import androidx.compose.material.*
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.core.app.ActivityCompat
 
 import androidx.navigation.compose.rememberNavController
+import com.test.dvt.Application
 import com.test.dvt.presentation.ui.components.BottomAppBarComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private val resultCode: Int = 200
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        isLocationPermissionGranted(this)
         setContent {
             DVTWeatherTestAppTheme {
                 val coroutineScope = rememberCoroutineScope()
@@ -45,6 +52,29 @@ class MainActivity : ComponentActivity() {
                     MainComponent(navHostController = navController)
                 }
             }
+        }
+    }
+
+    private fun isLocationPermissionGranted(context: Context): Boolean {
+        return if (ActivityCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this@MainActivity,
+                arrayOf(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION
+                ),
+                resultCode
+            )
+            false
+        } else {
+            true
         }
     }
 }
@@ -61,3 +91,5 @@ fun MainComponent(navHostController: NavHostController) {
         }
     }
 }
+
+
