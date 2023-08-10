@@ -8,12 +8,12 @@ plugins {
 
 android {
     namespace = "com.test.dvt"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.test.dvt"
         minSdk = 24
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -55,8 +55,6 @@ android {
 dependencies {
     val roomVersion = "2.5.2"
     val navVersion = "2.6.0"
-    val material3Version = "1.1.1"
-    val daggerVersion = "2.44.2"
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
@@ -75,7 +73,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     // Material UI - 3
-    implementation("androidx.compose.material3:material3:$material3Version")
+    implementation("androidx.compose.material:material:1.5.0")
 
     // Lottie
     implementation("com.airbnb.android:lottie-compose:5.2.0")

@@ -4,7 +4,6 @@ import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
@@ -56,7 +55,6 @@ private val LightColorScheme = lightColorScheme(
     primary = Purple40,
     secondary = PurpleGrey40,
     tertiary = Pink40,
-
     background = Color.White,
     surface = Color.White,
     onPrimary = Color.White,
@@ -87,9 +85,9 @@ fun DVTWeatherTestAppTheme(
             val activity = view.context as Activity
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                 activity.window.navigationBarColor = colorScheme.primary.copy(alpha = 0.08f).compositeOver(colorScheme.surface.copy()).toArgb()
-                activity.window.statusBarColor = colorScheme.background.toArgb()
-                WindowCompat.getInsetsController(activity.window, view).isAppearanceLightStatusBars = !darkTheme
-                WindowCompat.getInsetsController(activity.window, view).isAppearanceLightNavigationBars = !darkTheme
+                activity.window.statusBarColor = colorScheme.onBackground.toArgb()
+                WindowCompat.getInsetsController(activity.window, view).isAppearanceLightStatusBars = darkTheme
+                WindowCompat.getInsetsController(activity.window, view).isAppearanceLightNavigationBars = darkTheme
             }
         }
     }
