@@ -1,6 +1,5 @@
 package com.test.dvt.presentation.screens
 
-import android.location.Location
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +11,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 
 @Composable
-fun ForecastScreen(navController: NavController, location: Location?) {
+fun ForecastScreen(navController: NavController) {
     val context = LocalContext.current
     Column(
         modifier = Modifier

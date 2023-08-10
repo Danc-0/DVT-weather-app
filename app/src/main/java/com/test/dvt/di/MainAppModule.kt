@@ -2,10 +2,15 @@ package com.test.dvt.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.test.dvt.core.network_connectivity.ConnectivityObserver
 import com.test.dvt.core.network_connectivity.NetworkConnectivityObserver
 import com.test.dvt.core.utils.Constants
-import com.test.dvt.data.datasource.OpenWeatherService
+import com.test.dvt.data.OpenWeatherService
+import com.test.dvt.data.datasource.local.AppDatabase
+import com.test.dvt.data.datasource.remote.CurrentWeatherRepositoryImpl
+import com.test.dvt.domain.repository.CurrentWeatherRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -52,10 +57,36 @@ object MainAppModule {
             .create(OpenWeatherService::class.java)
     }
 
+    private val MIGRATION_1_2 = object : Migration(1, 2) {
+        override fun migrate(database: SupportSQLiteDatabase) {
+            database.execSQL(
+                ""
+            )
+        }
+    }
+
+    @Provides
+    @Singleton
+    fun provideAppDatabase(@ApplicationContext application: Context): AppDatabase {
+        return Room.databaseBuilder(
+            application,
+            AppDatabase::class.java,
+            "bored_activity"
+        )
+            .addMigrations(MIGRATION_1_2)
+            .build()
+    }
+
     @Provides
     @Singleton
     fun provideNetworkConnectivityService(@ApplicationContext applicationContext: Context): ConnectivityObserver {
         return NetworkConnectivityObserver(applicationContext)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCurrentWeatherRepository(openWeatherService: OpenWeatherService, appDatabase: AppDatabase): CurrentWeatherRepository {
+        return CurrentWeatherRepositoryImpl(openWeatherService, weatherDao = appDatabase.weatherDao)
     }
 
 }

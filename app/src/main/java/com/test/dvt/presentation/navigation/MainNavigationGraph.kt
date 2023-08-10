@@ -1,31 +1,35 @@
 package com.test.dvt.presentation.navigation
 
-import android.location.Location
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.test.dvt.presentation.screens.ForecastScreen
-import com.test.dvt.presentation.screens.HomeScreen
 import com.test.dvt.presentation.screens.WeatherScreen
 
+@SuppressLint("MissingPermission")
 @Composable
 fun MainNavigationGraph(
     navController: NavHostController,
-    location: Location?
+    lon: Double,
+    lat: Double
 ) {
     NavHost(
         navController = navController,
         startDestination = BottomNavRoutes.Weather.route
     ) {
-
         composable(route = BottomNavRoutes.Weather.route) {
-            WeatherScreen(navController = navController, location = location)
+            WeatherScreen(
+                navController = navController,
+                lon = lon,
+                lat = lat
+
+            )
         }
 
         composable(route = BottomNavRoutes.Forecast.route) {
-            ForecastScreen(navController = navController, location = location)
+//            ForecastScreen(navController = navController)
         }
     }
 }
+
