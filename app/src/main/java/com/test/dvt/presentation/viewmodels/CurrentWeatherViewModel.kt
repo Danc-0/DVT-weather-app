@@ -1,6 +1,7 @@
 package com.test.dvt.presentation.viewmodels
 
 import CurrentWeatherState
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.test.dvt.core.utils.Resource
@@ -42,6 +43,7 @@ class CurrentWeatherViewModel @Inject constructor(
                                 weather = weather.data,
                                 isLoading = true
                             )
+                            Log.d("TAG", "getCurrentWeather: ${state.value.isLoading}")
                         }
 
                         is Resource.Success -> {

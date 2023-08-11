@@ -84,6 +84,10 @@ fun SplashScreen() {
         mutableStateOf(false)
     }
 
+    var startMainActivity by remember(permissionState) {
+        mutableStateOf(false)
+    }
+
     var showRationale by remember(permissionState) {
         mutableStateOf(false)
     }
@@ -127,10 +131,11 @@ fun SplashScreen() {
 
         Button(
             onClick = {
-                 if (allRequiredPermissionsGranted) {
+                if (allRequiredPermissionsGranted) {
                     permissionState.permissions.filter {
                         it.status.isGranted
                     }.map { it.permission }
+                    startMainActivity = allRequiredPermissionsGranted
                 } else {
                     showPermissionDialog = true
                 }
@@ -225,16 +230,17 @@ fun SplashScreen() {
             )
         }
 
-        if(allRequiredPermissionsGranted){
-            LaunchedEffect(key1 = true){
+        if (startMainActivity) {
+            LaunchedEffect(key1 = true) {
                 scope.launch(Dispatchers.IO) {
                     val result = locationClient.lastLocation.await()
                     if (result == null) {
-                        val priority = if (permissions.contains(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                            Priority.PRIORITY_HIGH_ACCURACY
-                        } else {
-                            Priority.PRIORITY_BALANCED_POWER_ACCURACY
-                        }
+                        val priority =
+                            if (permissions.contains(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                                Priority.PRIORITY_HIGH_ACCURACY
+                            } else {
+                                Priority.PRIORITY_BALANCED_POWER_ACCURACY
+                            }
                         val locationRes = locationClient.getCurrentLocation(
                             priority,
                             CancellationTokenSource().token,
