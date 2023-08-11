@@ -24,6 +24,7 @@ import com.test.dvt.core.utils.convertUnixTimeToDay
 import com.test.dvt.core.utils.getWeatherCondition
 import com.test.dvt.core.utils.tempToInt
 import com.test.dvt.data.models.current_forecast.Daily
+import com.test.dvt.presentation.ui.theme.White
 
 @Composable
 fun WeatherForecastDetails(daily: List<Daily>?) {
@@ -71,12 +72,12 @@ fun SingleForecastComponent(dt: Long, weatherIconId: Int, temp: Double) {
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(text = convertUnixTimeToDay(dt))
+        Text(text = convertUnixTimeToDay(dt), color = White)
         Image(
             painter = painterResource(id = icon),
             contentDescription = "Weather Icon",
             contentScale = ContentScale.Fit
         )
-        Text(text = formattedTemp)
+        Text(text = formattedTemp, color = White)
     }
 }

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.test.dvt.R
+import com.test.dvt.presentation.ui.theme.White
 import java.util.Locale
 
 @Composable
@@ -52,11 +53,13 @@ fun MainItems(currentTemp: String, currentTempDesc: String) {
     ) {
         Text(
             text = "$currentTemp\u00B0",
+            color = White,
             style = MaterialTheme.typography.displayLarge.copy(fontWeight = FontWeight.Bold),
             textAlign = TextAlign.Center
         )
         Text(
             text = currentTempDesc.uppercase(Locale.ROOT),
+            color = White,
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center
         )

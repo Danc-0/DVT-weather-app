@@ -64,8 +64,13 @@ fun MainComponent(
 ) {
     val appState: SnackBarAppState = rememberSnackBarState()
     LaunchedEffect(key1 = true) {
-        if (status == ConnectivityObserver.NetworkStatus.Unavailable || status == ConnectivityObserver.NetworkStatus.Lost){
-            appState.showSnackBar(message = "Check your network connectivity for real time update")
+        when(status){
+            ConnectivityObserver.NetworkStatus.Unavailable,
+            ConnectivityObserver.NetworkStatus.Lost -> {
+                appState.showSnackBar(message = "Check your network connectivity for real time update")
+            } else -> {
+                return@LaunchedEffect
+            }
         }
     }
 

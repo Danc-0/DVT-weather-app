@@ -5,7 +5,6 @@ import com.test.dvt.data.OpenWeatherService
 import com.test.dvt.data.datasource.local.dao.WeatherDao
 import com.test.dvt.data.datasource.local.entity.SavedCurrentWeather
 import com.test.dvt.data.models.current_forecast.CurrentForecast
-import com.test.dvt.domain.models.CurrentWeather
 import com.test.dvt.domain.repository.CurrentWeatherRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

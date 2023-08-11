@@ -3,13 +3,12 @@ package com.test.dvt.core.network_connectivity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
-import com.test.dvt.core.network_connectivity.ConnectivityObserver.*
+import com.test.dvt.core.network_connectivity.ConnectivityObserver.NetworkStatus
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class NetworkConnectivityObserver(
     context: Context

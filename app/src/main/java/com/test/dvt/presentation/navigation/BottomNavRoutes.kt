@@ -10,18 +10,8 @@ sealed class BottomNavRoutes(
         title = "Splash",
     )
 
-    object Home : BottomNavRoutes(
-        route = "home_screen",
-        title = "Home",
-    )
-
     object Weather : BottomNavRoutes(
         route = "weather_screen",
         title = "Weather",
-    )
-
-    object Forecast : BottomNavRoutes(
-        route = "forecast_screen",
-        title = "Forecast",
     )
 }
