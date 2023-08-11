@@ -5,4 +5,7 @@
     <string name="permissions_request_title">Request For Permissions</string>
     <string name="grant">Grant</string>
     <string name="proceed">Proceed</string>
+    <string name="weather_forecasts">Weather ForeCasts</string>
+    <string name="get_start">Get Start</string>
+    <string name="required_permissions">Required Permissions</string>
 </resources>

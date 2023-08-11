@@ -115,7 +115,7 @@ fun SplashScreen() {
             contentScale = ContentScale.Fit,
         )
         Text(
-            text = "Weather ForeCasts",
+            text = stringResource(R.string.weather_forecasts),
             style = TextStyle(
                 fontSize = 50.sp,
                 lineHeight = 50.12.sp,
@@ -145,7 +145,7 @@ fun SplashScreen() {
                 .height(50.dp)
         ) {
             Text(
-                text = "Get Start",
+                text = stringResource(R.string.get_start),
                 style = TextStyle(
                     fontSize = 18.sp,
                     fontWeight = FontWeight(700),
@@ -198,10 +198,10 @@ fun SplashScreen() {
                     showRationale = false
                 },
                 title = {
-                    Text(text = "Permissions required by the sample")
+                    Text(text = stringResource(R.string.required_permissions))
                 },
                 text = {
-                    Text(text = "The sample requires the following permissions to work:\n $permissions")
+                    Text(text = "The following permissions are required\n $permissions\n for a detailed and informative experience")
                 },
                 confirmButton = {
                     TextButton(
