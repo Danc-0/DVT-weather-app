@@ -11,11 +11,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -25,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -35,6 +40,9 @@ import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
 import com.google.android.gms.tasks.CancellationTokenSource
@@ -44,21 +52,50 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
+@OptIn(ExperimentalPermissionsApi::class)
 @RequiresPermission(
     anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION],
 )
 @Composable
-fun SplashScreen(usePreciseLocation: Boolean) {
+fun SplashScreen() {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    val permissions = listOf(
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+    )
+    val requiredPermissions: List<String> = listOf(permissions.first())
+    var errorText by remember {
+        mutableStateOf("")
+    }
+
+    val permissionState = rememberMultiplePermissionsState(permissions = permissions) { map ->
+        val rejectedPermissions = map.filterValues { !it }.keys
+        errorText = if (rejectedPermissions.none { it in requiredPermissions }) {
+            ""
+        } else {
+            "${rejectedPermissions.joinToString()} required for the sample"
+        }
+    }
+    val allRequiredPermissionsGranted =
+        permissionState.revokedPermissions.none { it.permission in requiredPermissions }
+
+    var showPermissionDialog by remember(permissionState) {
+        mutableStateOf(false)
+    }
+
+    var showRationale by remember(permissionState) {
+        mutableStateOf(false)
+    }
+
     val locationClient = remember {
         LocationServices.getFusedLocationProviderClient(context)
     }
     var lonInfo by remember {
-        mutableStateOf(0.0)
+        mutableDoubleStateOf(0.0)
     }
     var latInfo by remember {
-        mutableStateOf(0.0)
+        mutableDoubleStateOf(0.0)
     }
 
     Column(
@@ -90,29 +127,12 @@ fun SplashScreen(usePreciseLocation: Boolean) {
 
         Button(
             onClick = {
-                scope.launch(Dispatchers.IO) {
-                    val result = locationClient.lastLocation.await()
-                    if (result == null) {
-                        val priority = if (usePreciseLocation) {
-                            Priority.PRIORITY_HIGH_ACCURACY
-                        } else {
-                            Priority.PRIORITY_BALANCED_POWER_ACCURACY
-                        }
-                        val locationRes = locationClient.getCurrentLocation(
-                            priority,
-                            CancellationTokenSource().token,
-                        ).await()
-                        locationRes?.let { fetchedLocation ->
-                            latInfo = fetchedLocation.latitude
-                            lonInfo = fetchedLocation.longitude
-                        }
-                        startMainActivity(context, lon = lonInfo, lat = latInfo)
-                    } else {
-                        latInfo = result.latitude
-                        lonInfo = result.longitude
-                        startMainActivity(context, lon = lonInfo, lat = latInfo)
-                    }
-
+                 if (allRequiredPermissionsGranted) {
+                    permissionState.permissions.filter {
+                        it.status.isGranted
+                    }.map { it.permission }
+                } else {
+                    showPermissionDialog = true
                 }
             },
             shape = RoundedCornerShape(25.dp),
@@ -133,6 +153,104 @@ fun SplashScreen(usePreciseLocation: Boolean) {
                     textAlign = TextAlign.Center,
                 )
             )
+        }
+
+        if (showPermissionDialog) {
+            AlertDialog(
+                onDismissRequest = {
+                    showPermissionDialog = false
+                },
+                title = {
+                    Text(text = stringResource(R.string.permissions_request_title))
+                },
+                text = {
+                    Text(text = stringResource(R.string.permission_request_desc))
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            showPermissionDialog = false
+                            if (permissionState.shouldShowRationale) {
+                                showRationale = true
+                            } else {
+                                permissionState.launchMultiplePermissionRequest()
+                            }
+                        },
+                    ) {
+                        Text(stringResource(R.string.grant))
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            showPermissionDialog = false
+                        },
+                    ) {
+                        Text(stringResource(R.string.dismiss))
+                    }
+                },
+            )
+        }
+
+        if (showRationale) {
+            AlertDialog(
+                onDismissRequest = {
+                    showRationale = false
+                },
+                title = {
+                    Text(text = "Permissions required by the sample")
+                },
+                text = {
+                    Text(text = "The sample requires the following permissions to work:\n $permissions")
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            showRationale = false
+                            permissionState.launchMultiplePermissionRequest()
+                        },
+                    ) {
+                        Text(stringResource(R.string.proceed))
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            showRationale = false
+                        },
+                    ) {
+                        Text(stringResource(id = R.string.dismiss))
+                    }
+                },
+            )
+        }
+
+        if(allRequiredPermissionsGranted){
+            LaunchedEffect(key1 = true){
+                scope.launch(Dispatchers.IO) {
+                    val result = locationClient.lastLocation.await()
+                    if (result == null) {
+                        val priority = if (permissions.contains(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                            Priority.PRIORITY_HIGH_ACCURACY
+                        } else {
+                            Priority.PRIORITY_BALANCED_POWER_ACCURACY
+                        }
+                        val locationRes = locationClient.getCurrentLocation(
+                            priority,
+                            CancellationTokenSource().token,
+                        ).await()
+                        locationRes?.let { fetchedLocation ->
+                            latInfo = fetchedLocation.latitude
+                            lonInfo = fetchedLocation.longitude
+                        }
+                        startMainActivity(context, lon = lonInfo, lat = latInfo)
+                    } else {
+                        latInfo = result.latitude
+                        lonInfo = result.longitude
+                        startMainActivity(context, lon = lonInfo, lat = latInfo)
+                    }
+                }
+            }
         }
     }
 }

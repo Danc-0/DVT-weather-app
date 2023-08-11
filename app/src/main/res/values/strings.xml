@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">DVT Weather Test App</string>
+    <string name="permission_request_desc">Weather DVT Requires Location Permission to Provide Accurate Data and Information.</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="permissions_request_title">Request For Permissions</string>
+    <string name="grant">Grant</string>
+    <string name="proceed">Proceed</string>
 </resources>
