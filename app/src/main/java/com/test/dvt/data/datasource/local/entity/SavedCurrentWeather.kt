@@ -3,15 +3,13 @@ package com.test.dvt.data.datasource.local.entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.test.dvt.data.models.current_forecast.Daily
 
-@Entity(tableName = "current_weather")
+@Entity(tableName = "current_weather_forecast")
 class SavedCurrentWeather(
     @PrimaryKey
     @ColumnInfo(name = "timezone")
     val timezone: Int,
-
-    @ColumnInfo(name = "locationName")
-    val name: String,
 
     @ColumnInfo(name = "latitude")
     val lat: Double,
@@ -20,21 +18,18 @@ class SavedCurrentWeather(
     val lon: Double,
 
     @ColumnInfo(name = "humidity")
-    val humidity: Int,
+    val currentTemp: Int,
 
-    @ColumnInfo(name = "pressure")
-    val pressure: Int,
+    @ColumnInfo(name = "currentMinTemp")
+    val currentMinTemp: Int,
 
-    @ColumnInfo(name = "seaLevel")
-    val sea_level: Int,
+    @ColumnInfo(name = "currentMaxTemp")
+    val currentMaxTemp: Int,
 
-    @ColumnInfo(name = "temperature")
-    val temp: Double,
+    @ColumnInfo(name = "description")
+    val description: String,
 
-    @ColumnInfo(name = "maximumTemp")
-    val temp_max: Double,
-
-    @ColumnInfo(name = "minimumTemp")
-    val temp_min: Double
+    @ColumnInfo(name = "icon")
+    val daily: List<Daily>
 
 )

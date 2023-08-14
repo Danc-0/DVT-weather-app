@@ -1,11 +1,11 @@
 package com.test.dvt.data.datasource.local.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.test.dvt.data.datasource.local.entity.SavedCurrentWeather
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface WeatherDao {
@@ -15,12 +15,12 @@ interface WeatherDao {
     /// Update the Current Weather.
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun saveCurrentWeatherDetails(vararg savedWeatherItem: SavedCurrentWeather)
+    fun insertWeather(vararg users: SavedCurrentWeather)
 
-    @Query("SELECT * FROM current_weather")
-    fun fetchCurrentWeatherByTimezone(): Flow<SavedCurrentWeather?>
+    @Query("SELECT * FROM current_weather_forecast")
+    fun getSavedWeather(): SavedCurrentWeather
 
-    @Query("DELETE FROM current_weather")
-    suspend fun updateCurrentWeather()
+    @Delete
+    fun deleteWeather(user: SavedCurrentWeather)
 
 }
