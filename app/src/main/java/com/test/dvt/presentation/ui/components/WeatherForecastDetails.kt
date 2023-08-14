@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.test.dvt.R
 import com.test.dvt.core.utils.WeatherCondition
@@ -24,6 +24,7 @@ import com.test.dvt.core.utils.convertUnixTimeToDay
 import com.test.dvt.core.utils.getWeatherCondition
 import com.test.dvt.core.utils.tempToInt
 import com.test.dvt.data.models.current_forecast.Daily
+import com.test.dvt.presentation.ui.theme.White
 
 @Composable
 fun WeatherForecastDetails(daily: List<Daily>?) {
@@ -34,17 +35,6 @@ fun WeatherForecastDetails(daily: List<Daily>?) {
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
         ) {
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight(),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                }
-            }
             items(daily?.size ?: 0) {forecast ->
                 SingleForecastComponent(dt = daily!![forecast].dt, weatherIconId = daily[forecast].weather[0].id, temp = daily[forecast].temp.day)
                 Spacer(modifier = Modifier.height(20.dp))
@@ -71,12 +61,13 @@ fun SingleForecastComponent(dt: Long, weatherIconId: Int, temp: Double) {
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(text = convertUnixTimeToDay(dt))
+        Text(text = convertUnixTimeToDay(dt), color = White, modifier = Modifier.weight(1f))
         Image(
             painter = painterResource(id = icon),
             contentDescription = "Weather Icon",
-            contentScale = ContentScale.Fit
+            contentScale = ContentScale.Fit,
+            modifier = Modifier.weight(1f)
         )
-        Text(text = formattedTemp)
+        Text(text = formattedTemp, color = White, modifier = Modifier.weight(1f), textAlign = TextAlign.End)
     }
 }

@@ -1,12 +1,12 @@
 package com.test.dvt.presentation.viewmodels
 
-import CurrentWeatherState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.test.dvt.core.utils.Resource
 import com.test.dvt.core.utils.UIEvent
 import com.test.dvt.data.models.current_forecast.CurrentForecast
 import com.test.dvt.domain.usecases.FetchCurrentWeatherUseCase
+import com.test.dvt.presentation.states.CurrentWeatherState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -47,7 +47,7 @@ class CurrentWeatherViewModel @Inject constructor(
                         is Resource.Success -> {
                             _state.value = state.value.copy(
                                 weather = weather.data,
-                                isLoading = true
+                                isLoading = false
                             )
                         }
 

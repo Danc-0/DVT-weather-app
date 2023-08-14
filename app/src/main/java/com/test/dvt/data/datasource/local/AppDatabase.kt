@@ -11,6 +11,6 @@ import com.test.dvt.data.datasource.local.entity.SavedCurrentWeather
     ],
     version = 1,
 )
-abstract class AppDatabase() : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
     abstract val weatherDao: WeatherDao
 }

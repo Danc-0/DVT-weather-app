@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.test.dvt.presentation.ui.theme.White
 
 @Composable
 fun CurrentTemperatureDetails(current: Double?, max: Double?, min: Double?) {
@@ -32,8 +33,8 @@ fun SingleTempItem(temp: Double?, description: String) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(start = 10.dp, end = 10.dp)
     ) {
-        Text(text = temp.toString())
-        Text(text = description)
+        Text(text = temp.toString(), color = White)
+        Text(text = description, color = White)
         Spacer(modifier = Modifier.size(10.dp))
     }
 }
