@@ -11,6 +11,9 @@ class SavedCurrentWeather(
     @ColumnInfo(name = "timezone")
     val timezone: Int,
 
+    @ColumnInfo(name = "city")
+    val weatherId: Int,
+
     @ColumnInfo(name = "latitude")
     val lat: Double,
 
@@ -18,18 +21,18 @@ class SavedCurrentWeather(
     val lon: Double,
 
     @ColumnInfo(name = "humidity")
-    val currentTemp: Int,
+    val currentTemp: Double,
 
     @ColumnInfo(name = "currentMinTemp")
-    val currentMinTemp: Int,
+    val currentMinTemp: Double,
 
     @ColumnInfo(name = "currentMaxTemp")
-    val currentMaxTemp: Int,
+    val currentMaxTemp: Double,
 
     @ColumnInfo(name = "description")
     val description: String,
 
     @ColumnInfo(name = "icon")
-    val daily: List<Daily>
+    val daily: List<Daily>,
 
-)
+    )

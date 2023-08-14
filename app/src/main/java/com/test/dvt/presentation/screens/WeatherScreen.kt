@@ -52,6 +52,7 @@ fun WeatherScreen(
         lat = coordinates.latitude,
         lon = coordinates.longitude
     )
+    currentWeatherViewModel.getCurrentWeatherFromDB()
     val viewWeatherState = currentWeatherViewModel.state.collectAsState()
 
     LaunchedEffect(key1 = true) {
@@ -74,9 +75,7 @@ fun WeatherScreen(
             } else if (viewWeatherState.value.weather != null) {
                 val backgroundColor =
                     when (getWeatherCondition(
-                        viewWeatherState.value.weather?.current?.weather?.get(
-                            0
-                        )?.id
+                        viewWeatherState.value.weather?.weatherId ?: 0
                     )) {
                         WeatherCondition.RAINY -> Rainy
                         WeatherCondition.CLOUDY -> Cloudy
@@ -91,15 +90,13 @@ fun WeatherScreen(
 
                     Column {
                         CurrentWeatherBar(
-                            currentTemp = viewWeatherState.value.weather?.current?.temp.toString(),
-                            weatherId = viewWeatherState.value.weather?.current?.weather?.get(
-                                0
-                            )?.id
+                            currentTemp = viewWeatherState.value.weather?.currentTemp.toString(),
+                            weatherId = viewWeatherState.value.weather?.weatherId,
                         )
                         CurrentTemperatureDetails(
-                            current = viewWeatherState.value.weather?.current?.temp,
-                            min = viewWeatherState.value.weather?.daily?.get(0)?.temp?.min,
-                            max = viewWeatherState.value.weather?.daily?.get(0)?.temp?.max,
+                            current = viewWeatherState.value.weather?.currentTemp,
+                            min = viewWeatherState.value.weather?.currentMinTemp,
+                            max = viewWeatherState.value.weather?.currentMaxTemp,
                         )
                         Divider(color = Color.White, thickness = 1.dp)
                         WeatherForecastDetails(daily = viewWeatherState.value.weather?.daily)

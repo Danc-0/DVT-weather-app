@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.test.dvt.core.utils.Resource
 import com.test.dvt.core.utils.UIEvent
-import com.test.dvt.data.models.current_forecast.CurrentForecast
+import com.test.dvt.data.datasource.local.entity.SavedCurrentWeather
+import com.test.dvt.domain.usecases.FetchCurrentWeatherFromDBUseCase
 import com.test.dvt.domain.usecases.FetchCurrentWeatherUseCase
 import com.test.dvt.presentation.states.CurrentWeatherState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,11 +21,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CurrentWeatherViewModel @Inject constructor(
-    private val getCurrentWeatherUseCase: FetchCurrentWeatherUseCase
+    private val getCurrentWeatherUseCase: FetchCurrentWeatherUseCase,
+    private val getCurrentWeatherUseCaseFromDBUseCase: FetchCurrentWeatherFromDBUseCase
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(CurrentWeatherState<CurrentForecast>())
-    val state: StateFlow<CurrentWeatherState<CurrentForecast>> = _state
+    private val _state = MutableStateFlow(CurrentWeatherState<SavedCurrentWeather>())
+    val state: StateFlow<CurrentWeatherState<SavedCurrentWeather>> = _state
 
     private val _events = MutableSharedFlow<UIEvent>()
     val eventFlow = _events.asSharedFlow()
@@ -34,7 +36,14 @@ class CurrentWeatherViewModel @Inject constructor(
     fun getCurrentWeather(lat: Double, lon: Double) {
         currentWeatherJob?.cancel()
         currentWeatherJob = viewModelScope.launch {
-            getCurrentWeatherUseCase(lat = lat, long = lon).onEach { weather ->
+            getCurrentWeatherUseCase(lat = lat, long = lon)
+        }
+    }
+
+    fun getCurrentWeatherFromDB() {
+        currentWeatherJob?.cancel()
+        currentWeatherJob = viewModelScope.launch {
+            getCurrentWeatherUseCaseFromDBUseCase().onEach { weather ->
                 if (weather.toString().isNotEmpty()) {
                     when (weather) {
                         is Resource.Loading -> {

@@ -10,17 +10,13 @@ import com.test.dvt.data.datasource.local.entity.SavedCurrentWeather
 @Dao
 interface WeatherDao {
 
-    /// Save the Current Weather
-    /// Retrieve the Current Weather.
-    /// Update the Current Weather.
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    fun insertWeather(vararg users: SavedCurrentWeather)
+    suspend fun insertWeather(vararg weather: SavedCurrentWeather)
 
     @Query("SELECT * FROM current_weather_forecast")
-    fun getSavedWeather(): SavedCurrentWeather
+    suspend fun getSavedWeather(): SavedCurrentWeather
 
     @Delete
-    fun deleteWeather(user: SavedCurrentWeather)
+    suspend fun deleteWeather(user: SavedCurrentWeather)
 
 }
