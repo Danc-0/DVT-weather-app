@@ -17,15 +17,15 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import com.test.dvt.presentation.navigation.BottomNavRoutes
+import com.test.dvt.presentation.navigation.MainNavRoutes
 
 @Composable
 fun SingleBottomAppItem(
-    bottomNavRoutes: BottomNavRoutes,
+    mainNavRoutes: MainNavRoutes,
     currentDestination: NavDestination?,
     navController: NavHostController
 ) {
-    val selected = currentDestination?.hierarchy?.any { it.route == bottomNavRoutes.route } == true
+    val selected = currentDestination?.hierarchy?.any { it.route == mainNavRoutes.route } == true
     val contentColor =
         if (selected) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.onBackground
 
@@ -33,7 +33,7 @@ fun SingleBottomAppItem(
         modifier = Modifier
             .clickable(
                 onClick = {
-                    navController.navigate(bottomNavRoutes.route) {
+                    navController.navigate(mainNavRoutes.route) {
                         popUpTo(navController.graph.findStartDestination().id)
                         launchSingleTop = true
                     }
@@ -47,7 +47,7 @@ fun SingleBottomAppItem(
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
-                text = bottomNavRoutes.title,
+                text = mainNavRoutes.title,
                 style = TextStyle(
                     color = contentColor,
                     fontWeight = FontWeight.Bold

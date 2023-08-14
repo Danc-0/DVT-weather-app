@@ -16,9 +16,9 @@ fun MainNavigationGraph(
 ) {
     NavHost(
         navController = navController,
-        startDestination = BottomNavRoutes.Weather.route
+        startDestination = MainNavRoutes.Weather.route
     ) {
-        composable(route = BottomNavRoutes.Weather.route) {
+        composable(route = MainNavRoutes.Weather.route) {
             WeatherScreen(
                 coordinates = coordinates
             )

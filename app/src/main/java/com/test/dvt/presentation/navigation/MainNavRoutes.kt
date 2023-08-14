@@ -1,16 +1,16 @@
 package com.test.dvt.presentation.navigation
 
-sealed class BottomNavRoutes(
+sealed class MainNavRoutes(
     val route: String,
     val title: String,
 ) {
 
-    object Splash : BottomNavRoutes(
+    object Splash : MainNavRoutes(
         route = "splash_screen",
         title = "Splash",
     )
 
-    object Weather : BottomNavRoutes(
+    object Weather : MainNavRoutes(
         route = "weather_screen",
         title = "Weather",
     )

@@ -20,11 +20,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.test.dvt.R
+import com.test.dvt.core.utils.getWeatherName
 import com.test.dvt.presentation.ui.theme.White
 import java.util.Locale
 
 @Composable
-fun CurrentWeatherBar(currentTemp: String, currentTempDesc: String) {
+fun CurrentWeatherBar(currentTemp: String, weatherId: Int?) {
     Box(
         modifier = Modifier
             .fillMaxWidth().height(350.dp),
@@ -37,14 +38,16 @@ fun CurrentWeatherBar(currentTemp: String, currentTempDesc: String) {
             contentScale = ContentScale.Crop
         )
         Column {
-            MainItems(currentTemp = currentTemp, currentTempDesc = currentTempDesc)
+            MainItems(currentTemp = currentTemp, weatherId = weatherId)
             Spacer(Modifier.size(4.dp))
         }
     }
 }
 
 @Composable
-fun MainItems(currentTemp: String, currentTempDesc: String) {
+fun MainItems(currentTemp: String, weatherId: Int?) {
+    val currentTempDesc = getWeatherName(weatherId)
+    val temp = "$currentTemp\u00B0"
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -52,7 +55,7 @@ fun MainItems(currentTemp: String, currentTempDesc: String) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "$currentTemp\u00B0",
+            text = temp,
             color = White,
             style = MaterialTheme.typography.displayLarge.copy(fontWeight = FontWeight.Bold),
             textAlign = TextAlign.Center

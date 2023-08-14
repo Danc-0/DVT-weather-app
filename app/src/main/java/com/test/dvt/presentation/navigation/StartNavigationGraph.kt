@@ -12,9 +12,9 @@ import com.test.dvt.presentation.screens.SplashScreen
 fun StartNavigationGraph(navController: NavHostController) {
     NavHost(
         navController = navController,
-        startDestination = BottomNavRoutes.Splash.route
+        startDestination = MainNavRoutes.Splash.route
     ) {
-        composable(route = BottomNavRoutes.Splash.route) {
+        composable(route = MainNavRoutes.Splash.route) {
             SplashScreen()
         }
     }
