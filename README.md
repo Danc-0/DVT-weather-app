@@ -48,6 +48,9 @@ The project uses best practices tools and solutions.
   * [Flow](https://developer.android.com/kotlin/flow) - Is a type that can emit multiple values sequentially, as opposed to suspend functions that return only a single value.
   * [Room](https://developer.android.com/training/data-storage/room) - Provide an abstraction layer over SQLite to allow fluent database access while harnessing the full power of SQLite
   * [Retrofit](https://square.github.io/retrofit/) - Class through which API Interfaces turn callable objects
+  * [Material UI]()
+  * [Google Location API](https://developers.google.com/maps/documentation/geolocation/overview)
+  * [Lottie](https://lottiefiles.com/featured) - For Animations
   * [ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel?gclid=CjwKCAjwjJmIBhA4EiwAQdCbxrvUiq3wgakPX8sop8Kp8irusL4bi_9xCnaiZkUJqBzTbOTB2FB4XRoCujoQAvD_BwE&gclsrc=aw.ds) - Manage UI related data in a lifecycle conscious way and act as a channel between use cases and ui
  
 ## CI/CD
