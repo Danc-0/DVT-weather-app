@@ -72,7 +72,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
-    // Material UI - 3
+    // Material UI
     implementation("androidx.compose.material:material:1.5.0")
 
     // Lottie
